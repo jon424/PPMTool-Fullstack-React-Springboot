@@ -1,5 +1,6 @@
 package com.jonjackson.ppmtool.repositories;
 
+import com.jonjackson.ppmtool.domain.Project;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

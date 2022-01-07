@@ -10,7 +10,7 @@ public class Project {
     private Long id;
     private String projectName;
     private String projectIdentifier; //adding custom identifier for Project {}
-    private String descriptor;
+    private String description;
     private Date start_date;
     private Date end_date;
 
@@ -45,12 +45,12 @@ public class Project {
         this.projectIdentifier = projectIdentifier;
     }
 
-    public String getDescriptor() {
-        return descriptor;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescriptor(String descriptor) {
-        this.descriptor = descriptor;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getStart_date() {
