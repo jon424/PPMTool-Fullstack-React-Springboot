@@ -1,6 +1,10 @@
 package com.jonjackson.ppmtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity //calls this object an entity that we will add to
@@ -8,13 +12,21 @@ public class Project {
     @Id
     @GeneratedValue
     private Long id;
+    @NotBlank(message = "Project name is required")
     private String projectName;
+    @NotBlank(message = "Project Identifier is required")
+    @Size(min=4, max=5, message = "Please use 4 to 5 characters")
+    @Column(updatable = false, unique = true)
     private String projectIdentifier; //adding custom identifier for Project {}
+    @NotBlank(message = "Project Description is required")
     private String description;
+    @JsonFormat(pattern = "mm-dd-yyyy")
     private Date start_date;
+    @JsonFormat(pattern = "mm-dd-yyyy")
     private Date end_date;
-
+    @JsonFormat(pattern = "mm-dd-yyyy")
     private Date created_at;
+    @JsonFormat(pattern = "mm-dd-yyyy")
     private Date updated_at;
 
     //constructor
