@@ -1,6 +1,7 @@
 package com.jonjackson.ppmtool.web;
 
 import com.jonjackson.ppmtool.domain.Project;
+import com.jonjackson.ppmtool.services.MapValidationErrorService;
 import com.jonjackson.ppmtool.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,23 +25,16 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
+
     //create new project
     @PostMapping("")
     //control response statuses with response entity. ResponseEntity comes with Springboot
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
-        if (result.hasErrors()){
 
-            //we just want "field": "errorMessage", not all the crap coming in from getFieldErrors()
-            Map<String, String> errorMap = new HashMap<>();
-            for(FieldError error: result.getFieldErrors()){
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-
-
-            return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
-//            return new ResponseEntity<List<FieldError>>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
-        }
-
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if (errorMap != null) return errorMap;
 
         Project project1 = projectService.saveOrUpdateProject(project);
         return new ResponseEntity<Project>(project, HttpStatus.CREATED);

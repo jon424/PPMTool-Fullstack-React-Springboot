@@ -12,7 +12,7 @@ public class ProjectService {
     private ProjectRepository projectRepository;
 
     //enable the application to save a project
-    public Project saveOrUpdateProject(Project project){
+    public Project saveOrUpdateProject(Project project) {
 
         //TODO:
         // logic to see if updating object is user-owned, etc...
