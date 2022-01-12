@@ -1,6 +1,7 @@
 package com.jonjackson.ppmtool.services;
 
 import com.jonjackson.ppmtool.domain.Project;
+import com.jonjackson.ppmtool.exceptions.ProjectIDException;
 import com.jonjackson.ppmtool.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,12 @@ public class ProjectService {
         //TODO:
         // logic to see if updating object is user-owned, etc...
 
-        return projectRepository.save(project);
+        try {
+            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            return projectRepository.save(project);
+        } catch (Exception e) {
+            throw new ProjectIDException(("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exists"));
+        }
+
     }
 }
