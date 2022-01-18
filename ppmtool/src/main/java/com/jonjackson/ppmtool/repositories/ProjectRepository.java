@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 //extend the CrudRepository, passing in the Project object and the type of ID (Long)
 //CrudRepository gives us a set of methods to use out of the box
 public interface ProjectRepository extends CrudRepository<Project, Long> {
+    Project findByProjectIdentifier(String projectId);
 
-    @Override
-    Iterable<Project> findAllById(Iterable<Long> longs);
+//    @Override
+//    Iterable<Project> findAllById(Iterable<Long> longs);
 }
