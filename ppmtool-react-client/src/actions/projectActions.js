@@ -4,8 +4,6 @@ import { GET_ERRORS } from "./types";
 
 //we wire up some methods ... useNavigate (react router v6) allows you to redirect once we submit form
 export const createProject = (project, navigate) => async (dispatch) => {
-  console.log("hi from createPRoject");
-
   try {
     const res = await axios.post("http://localhost:8080/api/project", project);
     navigate("/dashboard");
