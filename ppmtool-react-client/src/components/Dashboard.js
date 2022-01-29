@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProjectItem from "./Project/ProjectItem";
 import CreateProjectButton from "./Project/CreateProjectButton";
+import { connect } from "react-redux";
+import { getProjects } from "../actions/projectActions";
+import PropTypes from "prop-types";
 
 const Dashboard = (props) => {
+  useEffect(() => {
+    props.onGetProjects();
+  }, [props]);
+
   return (
     <div className="projects">
       <div className="container">
@@ -21,4 +28,15 @@ const Dashboard = (props) => {
   );
 };
 
-export default Dashboard;
+Dashboard.propTypes = {
+  project: PropTypes.object.isRequired,
+  onGetProjects: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  project: state.project,
+});
+
+export default connect(mapStateToProps, (dispatch) => ({
+  onGetProjects: () => dispatch(getProjects()),
+}))(Dashboard);
