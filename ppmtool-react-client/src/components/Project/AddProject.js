@@ -25,12 +25,7 @@ const AddProject = (props) => {
       endDate: endDate,
       errors: {},
     };
-    // createProject(newProject, props.history);
-    // createProject(newProject, props.history);
     props.onCreateProject(newProject, props.history);
-
-    console.log("newProject: ", newProject);
-    console.log("props.history: ", props.history);
   };
 
   return (
@@ -106,9 +101,6 @@ AddProject.propTypes = {
   //   errors: PropTypes.object.isRequired,
 };
 
-// const mapStateToProps = (state) => ({ errors: state.errors });
 export default connect(null, (dispatch) => ({
   onCreateProject: (props, history) => dispatch(createProject(props, history)),
 }))(AddProject);
-
-// export default connect(null, { createProject })(AddProject);
