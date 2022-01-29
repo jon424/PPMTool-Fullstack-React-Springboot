@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router";
 import { createProject } from "../../actions/projectActions";
 
 const AddProject = (props) => {
+  let navigate = useNavigate();
   // "projectName": "UPDATED NAME!!!!!",
   // "projectIdentifier": "ID20",
   // "description": "description dawg234",
@@ -25,7 +27,7 @@ const AddProject = (props) => {
       endDate: endDate,
       errors: {},
     };
-    props.onCreateProject(newProject, props.history);
+    props.onCreateProject(newProject, navigate);
   };
 
   return (
@@ -97,7 +99,7 @@ const AddProject = (props) => {
 };
 
 AddProject.propTypes = {
-  createProject: PropTypes.func.isRequired,
+  onCreateProject: PropTypes.func.isRequired,
   //   errors: PropTypes.object.isRequired,
 };
 
