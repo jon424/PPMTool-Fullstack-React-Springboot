@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createProject } from "../../actions/projectActions";
 
 const AddProject = (props) => {
   // "projectName": "UPDATED NAME!!!!!",
@@ -20,8 +23,14 @@ const AddProject = (props) => {
       description: description,
       startDate: startDate,
       endDate: endDate,
+      errors: {},
     };
-    console.log(newProject); //what react sends back to spring boot...
+    // createProject(newProject, props.history);
+    // createProject(newProject, props.history);
+    props.onCreateProject(newProject, props.history);
+
+    console.log("newProject: ", newProject);
+    console.log("props.history: ", props.history);
   };
 
   return (
@@ -92,4 +101,14 @@ const AddProject = (props) => {
   );
 };
 
-export default AddProject;
+AddProject.propTypes = {
+  createProject: PropTypes.func.isRequired,
+  //   errors: PropTypes.object.isRequired,
+};
+
+// const mapStateToProps = (state) => ({ errors: state.errors });
+export default connect(null, (dispatch) => ({
+  onCreateProject: (props, history) => dispatch(createProject(props, history)),
+}))(AddProject);
+
+// export default connect(null, { createProject })(AddProject);
