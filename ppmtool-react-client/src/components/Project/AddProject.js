@@ -78,7 +78,6 @@ const AddProject = (props) => {
                   </div>
                 )}
               </div>
-
               <div className="form-group">
                 <textarea
                   className={classNames("form-control form-control-lg ", {
@@ -113,7 +112,6 @@ const AddProject = (props) => {
                   onChange={(e) => setEndDate(e.target.value)}
                 />
               </div>
-
               <input type="submit" className="btn btn-primary btn-block mt-4" />
             </form>
           </div>
