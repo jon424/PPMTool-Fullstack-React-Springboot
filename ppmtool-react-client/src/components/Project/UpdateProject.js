@@ -7,11 +7,9 @@ import { getProject, createProject } from "../../actions/projectActions";
 import classNames from "classnames";
 
 const UpdateProject = (props) => {
-  console.log(props.project); //the Project object is coming in!!!
+  console.log(props.project);
   let navigate = useNavigate();
   const { id } = useParams();
-
-  console.log("pro yecht: ", props.project);
   //   const [state, setState] = useState({
   //     id,
   //     projectName: props.project.projectName,
@@ -29,9 +27,20 @@ const UpdateProject = (props) => {
     endDate: "",
   });
 
-  useEffect(() => {
-    setState(props.project);
-  }, [props.project]);
+  useEffect(
+    (state) => {
+      setState({
+        ...state,
+        id: props.project.id,
+        projectName: props.project.projectName,
+        projectIdentifier: props.project.projectIdentifier,
+        description: props.project.description,
+        startDate: props.project.startDate,
+        endDate: props.project.endDate,
+      });
+    },
+    [props.project]
+  );
 
   useEffect(() => {
     if (props.errors) {
@@ -39,26 +48,25 @@ const UpdateProject = (props) => {
     }
 
     props.onGetProject(id, navigate);
-  }, [props, id, navigate]);
+  }, [id, navigate]);
 
   const onChange = (e) => {
-    console.log("onCHAAAANGE", e.target.value);
     setState((state) => ({
       ...state,
       [e.target.name]: e.target.value,
     }));
+    // console.log("state in onChange(): ", state);
   };
 
-  console.log("state before onSubmit(): ", state);
+  //   console.log("state before onSubmit(): ", state);
 
   const onSubmit = (e) => {
-    console.log("onSUBMIT");
     e.preventDefault();
     const updateProject = {
       ...state,
     };
 
-    console.log("updateProject: ", updateProject);
+    // console.log("updateProject in onSubmit: ", updateProject);
     props.onCreateProject(updateProject, navigate);
   };
 
