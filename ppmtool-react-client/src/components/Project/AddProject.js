@@ -7,11 +7,7 @@ import classNames from "classnames";
 
 const AddProject = (props) => {
   let navigate = useNavigate();
-  // "projectName": "UPDATED NAME!!!!!",
-  // "projectIdentifier": "ID20",
-  // "description": "description dawg234",
-  // "start_date": null,
-  // "end_date": null,
+
   const [projectName, setProjectName] = useState("");
   const [projectIdentifier, setProjectIdentifier] = useState("");
   const [description, setDescription] = useState("");

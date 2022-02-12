@@ -1,47 +1,65 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import { getProject } from "../../actions/projectActions";
+import { getProject, createProject } from "../../actions/projectActions";
 import classNames from "classnames";
 
 const UpdateProject = (props) => {
+  console.log(props.project); //the Project object is coming in!!!
   let navigate = useNavigate();
   const { id } = useParams();
-  // "projectName": "UPDATED NAME!!!!!",
-  // "projectIdentifier": "ID20",
-  // "description": "description dawg234",
-  // "start_date": null,
-  // "end_date": null,
-  const [projectName, setProjectName] = useState("");
-  const [projectIdentifier, setProjectIdentifier] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(Date);
-  const [endDate, setEndDate] = useState(Date);
-  const [errors, setErrors] = useState({});
+
+  console.log("pro yecht: ", props.project);
+  //   const [state, setState] = useState({
+  //     id,
+  //     projectName: props.project.projectName,
+  //     projectIdentifier: props.project.projectIdentifier,
+  //     description: props.project.description,
+  //     startDate: props.project.startDate,
+  //     endDate: props.projectendDate,
+  //   });
+  const [state, setState] = useState({
+    id,
+    projectName: "",
+    projectIdentifier: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+  });
 
   useEffect(() => {
-    // if (props.errors) {
-    //   setErrors(props.errors);
-    // }
-    // const { id } = props.match.params;
+    setState(props.project);
+  }, [props.project]);
 
-    // console.log("id: ", id, " props: ", props);
+  useEffect(() => {
+    if (props.errors) {
+      //   setErrors(props.errors);
+    }
 
     props.onGetProject(id, navigate);
-  }, [props.errors]);
+  }, [props, id, navigate]);
+
+  const onChange = (e) => {
+    console.log("onCHAAAANGE", e.target.value);
+    setState((state) => ({
+      ...state,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  console.log("state before onSubmit(): ", state);
 
   const onSubmit = (e) => {
+    console.log("onSUBMIT");
     e.preventDefault();
-    const newProject = {
-      projectName: projectName,
-      projectIdentifier: projectIdentifier,
-      description: description,
-      startDate: startDate,
-      endDate: endDate,
-      errors: {},
+    const updateProject = {
+      ...state,
     };
-    props.onGetProject(id, navigate);
+
+    console.log("updateProject: ", updateProject);
+    props.onCreateProject(updateProject, navigate);
   };
 
   return (
@@ -51,53 +69,53 @@ const UpdateProject = (props) => {
           <div className="col-md-8 m-auto">
             <h5 className="display-4 text-center">Update Project</h5>
             <hr />
-            <form onSubmit={onSubmit}>
+            <form onSubmit={(e) => onSubmit(e)}>
               <div className="form-group">
                 <input
                   type="text"
-                  className={classNames("form-control form-control-lg ", {
-                    "is-invalid": errors.projectName,
-                  })}
+                  //   className={classNames("form-control form-control-lg ", {
+                  //     "is-invalid": errors.projectName,
+                  //   })}
                   placeholder="Project Name"
                   name="projectName"
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
+                  defaultValue={state.projectName}
+                  onChange={onChange}
                 />
-                {errors.projectName && (
+                {/* {errors.projectName && (
                   <div className="invalid-feedback">{errors.projectName}</div>
-                )}
+                )} */}
               </div>
               <div className="form-group">
                 <input
                   type="text"
-                  className={classNames("form-control form-control-lg ", {
-                    "is-invalid": errors.projectIdentifier,
-                  })}
+                  //   className={classNames("form-control form-control-lg ", {
+                  //     "is-invalid": errors.projectIdentifier,
+                  //   })}
                   placeholder="Unique Project ID"
                   name="projectIdentifier"
-                  value={projectIdentifier}
-                  onChange={(e) => setProjectIdentifier(e.target.value)}
+                  defaultValue={state.projectIdentifier}
+                  onChange={onChange}
                   disabled
                 />
-                {errors.projectIdentifier && (
+                {/* {errors.projectIdentifier && (
                   <div className="invalid-feedback">
                     {errors.projectIdentifier}
                   </div>
-                )}
+                )} */}
               </div>
               <div className="form-group">
                 <textarea
-                  className={classNames("form-control form-control-lg ", {
-                    "is-invalid": errors.description,
-                  })}
+                  //   className={classNames("form-control form-control-lg ", {
+                  //     "is-invalid": errors.description,
+                  //   })}
                   placeholder="Project Description"
                   name="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  defaultValue={state.description}
+                  onChange={onChange}
                 ></textarea>
-                {errors.description && (
+                {/* {errors.description && (
                   <div className="invalid-feedback">{errors.description}</div>
-                )}
+                )} */}
               </div>
               <h6>Start Date</h6>
               <div className="form-group">
@@ -105,8 +123,8 @@ const UpdateProject = (props) => {
                   type="date"
                   className="form-control form-control-lg"
                   name="start_date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  defaultValue={state.startDate}
+                  onChange={onChange}
                 />
               </div>
               <h6>Estimated End Date</h6>
@@ -115,8 +133,8 @@ const UpdateProject = (props) => {
                   type="date"
                   className="form-control form-control-lg"
                   name="end_date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  defaultValue={state.endDate}
+                  onChange={onChange}
                 />
               </div>
               <input type="submit" className="btn btn-primary btn-block mt-4" />
@@ -130,6 +148,7 @@ const UpdateProject = (props) => {
 
 UpdateProject.propTypes = {
   onGetProject: PropTypes.func.isRequired,
+  onCreateProject: PropTypes.func.isRequired,
   project: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
 };
@@ -141,4 +160,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, (dispatch) => ({
   onGetProject: (props, history) => dispatch(getProject(props, history)),
+  onCreateProject: (props, history) => dispatch(createProject(props, history)),
 }))(UpdateProject);
