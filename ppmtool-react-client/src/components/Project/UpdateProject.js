@@ -26,6 +26,7 @@ const UpdateProject = (props) => {
     description: "",
     startDate: "",
     endDate: "",
+    errors: {},
   });
 
   useEffect(
@@ -38,21 +39,23 @@ const UpdateProject = (props) => {
         description: props.project.description,
         startDate: props.project.startDate,
         endDate: props.project.endDate,
+        errors: props.errors,
       });
     },
-    [props.project]
+    [props.project, props.errors]
   );
 
   useEffect(() => {
     if (props.errors) {
-      //   setErrors(props.errors);
+      setState({ ...state, errors: props.errors });
       console.log("props.errors in UpdateProject: ", props.errors);
     }
   }, [props.errors]);
 
+  let onGetProject = props.onGetProject;
   useEffect(() => {
-    props.onGetProject(id, navigate);
-  }, [id, navigate]);
+    onGetProject(id, navigate);
+  }, [onGetProject, id, navigate]);
 
   const onChange = (e) => {
     setState((state) => ({
@@ -89,7 +92,7 @@ const UpdateProject = (props) => {
           <div className="col-md-8 m-auto">
             <h5 className="display-4 text-center">Update Project</h5>
             <hr />
-            <form onSubmit={(e) => onSubmit(e)}>
+            <form onSubmit={onSubmit}>
               <div className="form-group">
                 <input
                   type="text"
