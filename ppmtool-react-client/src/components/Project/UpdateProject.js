@@ -11,19 +11,42 @@ const UpdateProject = (props) => {
   let navigate = useNavigate();
   const { id } = useParams();
 
-  const [projectName, setProjectName] = useState(props.project.projectName);
-  const [projectIdentifier, setProjectIdentifier] = useState(
-    props.project.projectIdentifier
+  //   const [projectName, setProjectName] = useState(props.project.projectName);
+  //   const [projectIdentifier, setProjectIdentifier] = useState(
+  //     props.project.projectIdentifier
+  //   );
+  //   const [description, setDescription] = useState(props.project.description);
+  //   const [startDate, setStartDate] = useState(props.project.startDate);
+  //   const [endDate, setEndDate] = useState(props.project.endDate);
+  //   const [errors, setErrors] = useState(props.errors);
+  const [state, setState] = useState({
+    id,
+    projectName: "",
+    projectIdentifier: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  useEffect(
+    (state) => {
+      setState({
+        ...state,
+        id: props.project.id,
+        projectName: props.project.projectName,
+        projectIdentifier: props.project.projectIdentifier,
+        description: props.project.description,
+        startDate: props.project.startDate,
+        endDate: props.project.endDate,
+      });
+    },
+    [props.project]
   );
-  const [description, setDescription] = useState(props.project.description);
-  const [startDate, setStartDate] = useState(props.project.startDate);
-  const [endDate, setEndDate] = useState(props.project.endDate);
-  const [errors, setErrors] = useState(props.errors);
 
   useEffect(() => {
     if (props.errors) {
-      setErrors(props.errors);
-      console.log("props.errors in AddProj: ", props.errors);
+      //   setErrors(props.errors);
+      console.log("props.errors in UpdateProject: ", props.errors);
     }
   }, [props.errors]);
 
@@ -31,19 +54,28 @@ const UpdateProject = (props) => {
     props.onGetProject(id, navigate);
   }, [id, navigate]);
 
+  const onChange = (e) => {
+    setState((state) => ({
+      ...state,
+      [e.target.name]: e.target.value,
+    }));
+    // console.log("state in onChange(): ", state);
+  };
+
   const onSubmit = (e) => {
     if (props.errors) {
-      setErrors(props.errors);
-      console.log("props.errors onSubmit: ", props.errors);
+      //   e.preventDefault();
+      props.onGetProject(id, navigate);
     }
     e.preventDefault();
     const updateProject = {
-      projectName: projectName,
-      projectIdentifier: projectIdentifier,
-      description: description,
-      startDate: startDate,
-      endDate: endDate,
-      errors: props.errors,
+      ...state,
+      //   projectName: projectName,
+      //   projectIdentifier: projectIdentifier,
+      //   description: description,
+      //   startDate: startDate,
+      //   endDate: endDate,
+      //   errors: props.errors,
     };
 
     // console.log("updateProject in onSubmit: ", updateProject);
@@ -62,47 +94,51 @@ const UpdateProject = (props) => {
                 <input
                   type="text"
                   className={classNames("form-control form-control-lg ", {
-                    "is-invalid": errors.projectName,
+                    "is-invalid": props.errors.projectName,
                   })}
                   placeholder="Project Name"
                   name="projectName"
                   defaultValue={props.project.projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
+                  onChange={onChange}
                 />
-                {errors.projectName && (
-                  <div className="invalid-feedback">{errors.projectName}</div>
+                {props.errors.projectName && (
+                  <div className="invalid-feedback">
+                    {props.errors.projectName}
+                  </div>
                 )}
               </div>
               <div className="form-group">
                 <input
                   type="text"
                   className={classNames("form-control form-control-lg ", {
-                    "is-invalid": errors.projectIdentifier,
+                    "is-invalid": props.errors.projectIdentifier,
                   })}
                   placeholder="Unique Project ID"
                   name="projectIdentifier"
                   defaultValue={props.project.projectIdentifier}
-                  onChange={(e) => setProjectIdentifier(e.target.value)}
+                  onChange={onChange}
                   //   disabled
                 />
-                {errors.projectIdentifier && (
+                {props.errors.projectIdentifier && (
                   <div className="invalid-feedback">
-                    {errors.projectIdentifier}
+                    {props.errors.projectIdentifier}
                   </div>
                 )}
               </div>
               <div className="form-group">
                 <textarea
                   className={classNames("form-control form-control-lg ", {
-                    "is-invalid": errors.description,
+                    "is-invalid": props.errors.description,
                   })}
                   placeholder="Project Description"
                   name="description"
                   defaultValue={props.project.description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={onChange}
                 ></textarea>
-                {errors.description && (
-                  <div className="invalid-feedback">{errors.description}</div>
+                {props.errors.description && (
+                  <div className="invalid-feedback">
+                    {props.errors.description}
+                  </div>
                 )}
               </div>
               <h6>Start Date</h6>
@@ -112,7 +148,7 @@ const UpdateProject = (props) => {
                   className="form-control form-control-lg"
                   name="start_date"
                   defaultValue={props.project.startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  onChange={onChange}
                 />
               </div>
               <h6>Estimated End Date</h6>
@@ -122,7 +158,7 @@ const UpdateProject = (props) => {
                   className="form-control form-control-lg"
                   name="end_date"
                   defaultValue={props.project.endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  onChange={onChange}
                 />
               </div>
               <input type="submit" className="btn btn-primary btn-block mt-4" />
