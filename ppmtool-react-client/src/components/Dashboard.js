@@ -6,9 +6,10 @@ import { getProjects } from "../actions/projectActions";
 import PropTypes from "prop-types";
 
 const Dashboard = (props) => {
+  let onGetProjects = props.onGetProjects;
   useEffect(() => {
-    props.onGetProjects();
-  }, [props]);
+    onGetProjects();
+  }, []);
 
   const { projects } = props.project;
 

@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 import { getProject, createProject } from "../../actions/projectActions";
 import classNames from "classnames";
 
 const UpdateProject = (props) => {
   //   console.log(props.project);
   let navigate = useNavigate();
+  let location = useLocation();
   const { id } = useParams();
 
   //   const [projectName, setProjectName] = useState(props.project.projectName);
@@ -29,48 +30,58 @@ const UpdateProject = (props) => {
     errors: {},
   });
 
+  let project = props.project;
+  let errors = props.errors;
   useEffect(
     (state) => {
       setState({
         ...state,
-        id: props.project.id,
-        projectName: props.project.projectName,
-        projectIdentifier: props.project.projectIdentifier,
-        description: props.project.description,
-        startDate: props.project.startDate,
-        endDate: props.project.endDate,
-        errors: props.errors,
+        id: project.id,
+        projectName: project.projectName,
+        projectIdentifier: project.projectIdentifier,
+        description: project.description,
+        startDate: project.startDate,
+        endDate: project.endDate,
+        errors: errors,
       });
+      console.log("useEffect1 state: ", state);
     },
-    [props.project, props.errors]
+    [project, errors]
   );
 
   useEffect(() => {
     if (props.errors) {
       setState({ ...state, errors: props.errors });
-      console.log("props.errors in UpdateProject: ", props.errors);
     }
+    console.log("useEffect2 state: ", state);
   }, [props.errors]);
 
   let onGetProject = props.onGetProject;
-  useEffect(() => {
-    onGetProject(id, navigate);
-  }, [onGetProject, id, navigate]);
+  useEffect(
+    () => {
+      onGetProject(id, navigate);
+      console.log("useEffect3 (onGetProject) state: ", state);
+    },
+    //    [onGetProject, id, navigate]
+    []
+  );
 
   const onChange = (e) => {
     setState((state) => ({
       ...state,
       [e.target.name]: e.target.value,
     }));
-    // console.log("state in onChange(): ", state);
+    console.log("onChange() state: ", state);
   };
 
   const onSubmit = (e) => {
+    e.preventDefault();
     if (props.errors) {
       //   e.preventDefault();
-      props.onGetProject(id, navigate);
+      //   props.onGetProject(id, navigate);
+      navigate(location);
     }
-    e.preventDefault();
+
     const updateProject = {
       ...state,
       //   projectName: projectName,
@@ -80,8 +91,9 @@ const UpdateProject = (props) => {
       //   endDate: endDate,
       //   errors: props.errors,
     };
+    setState({ ...updateProject });
 
-    // console.log("updateProject in onSubmit: ", updateProject);
+    console.log("onSubmit state: ", state);
     props.onCreateProject(updateProject, navigate);
   };
 
