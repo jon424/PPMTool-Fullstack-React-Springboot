@@ -18,6 +18,7 @@ const AddProject = (props) => {
   useEffect(() => {
     if (props.errors) {
       setErrors(props.errors);
+      // console.log("props.errors in AddProj: ", props.errors);
     }
   }, [props.errors]);
 

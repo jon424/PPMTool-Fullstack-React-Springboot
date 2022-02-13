@@ -12,29 +12,24 @@ export const createProject = (project, navigate) => async (dispatch) => {
       type: GET_ERRORS,
       payload: err.response.data,
     });
+    console.log("err from actions: ", err);
   }
 };
 
 export const getProjects = () => async (dispatch) => {
-  try {
-    const res = await axios.get("http://localhost:8080/api/project/all");
-    dispatch({
-      type: GET_PROJECTS,
-      payload: res.data,
-    });
-    // navigate("/dashboard");
-  } catch (err) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: err.response.data,
-    });
-  }
+  const res = await axios.get("http://localhost:8080/api/project/all");
+  dispatch({
+    type: GET_PROJECTS,
+    payload: res.data,
+  });
 };
 
 //gets history, because if there are any errors, we redirect to /dashboard
-export const getProject = (id, history) => async (dispatch) => {
+export const getProject = (id, navigate) => async (dispatch) => {
   try {
     const res = await axios.get(`http://localhost:8080/api/project/${id}`);
     dispatch({ type: GET_PROJECT, payload: res.data });
-  } catch (err) {}
+  } catch (err) {
+    navigate("/dashboard");
+  }
 };

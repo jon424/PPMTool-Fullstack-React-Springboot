@@ -20,14 +20,14 @@ public class Project {
     private String projectIdentifier; //adding custom identifier for Project {}
     @NotBlank(message = "Project Description is required")
     private String description;
-    @JsonFormat(pattern = "mm-dd-yyyy")
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date start_date;
-    @JsonFormat(pattern = "mm-dd-yyyy")
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date end_date;
-    @JsonFormat(pattern = "mm-dd-yyyy")
+    @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(updatable = false)
     private Date created_at;
-    @JsonFormat(pattern = "mm-dd-yyyy")
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_at;
 
     //constructor
