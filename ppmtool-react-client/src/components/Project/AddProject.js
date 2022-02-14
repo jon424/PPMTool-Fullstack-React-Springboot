@@ -8,29 +8,42 @@ import classNames from "classnames";
 const AddProject = (props) => {
   let navigate = useNavigate();
 
-  const [projectName, setProjectName] = useState("");
-  const [projectIdentifier, setProjectIdentifier] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(Date);
-  const [endDate, setEndDate] = useState(Date);
-  const [errors, setErrors] = useState({});
+  // const [projectName, setProjectName] = useState("");
+  // const [projectIdentifier, setProjectIdentifier] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [startDate, setStartDate] = useState(Date);
+  // const [endDate, setEndDate] = useState(Date);
+  // const [errors, setErrors] = useState({});
+
+  const [state, setState] = useState({
+    projectName: "",
+    projectIdentifier: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    errors: {},
+  });
 
   useEffect(() => {
     if (props.errors) {
-      setErrors(props.errors);
+      setState({ ...state, errors: props.errors });
       // console.log("props.errors in AddProj: ", props.errors);
     }
   }, [props.errors]);
 
+  const onChange = (e) => {
+    let field = e.target.name;
+    props.errors[field] = false;
+    setState((projectDetails) => ({
+      ...projectDetails,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
     const newProject = {
-      projectName: projectName,
-      projectIdentifier: projectIdentifier,
-      description: description,
-      startDate: startDate,
-      endDate: endDate,
-      errors: {},
+      ...state,
     };
     props.onCreateProject(newProject, navigate);
   };
@@ -47,46 +60,50 @@ const AddProject = (props) => {
                 <input
                   type="text"
                   className={classNames("form-control form-control-lg ", {
-                    "is-invalid": errors.projectName,
+                    "is-invalid": state.errors.projectName,
                   })}
                   placeholder="Project Name"
                   name="projectName"
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
+                  value={state.projectName}
+                  onChange={onChange}
                 />
-                {errors.projectName && (
-                  <div className="invalid-feedback">{errors.projectName}</div>
+                {state.errors.projectName && (
+                  <div className="invalid-feedback">
+                    {state.errors.projectName}
+                  </div>
                 )}
               </div>
               <div className="form-group">
                 <input
                   type="text"
                   className={classNames("form-control form-control-lg ", {
-                    "is-invalid": errors.projectIdentifier,
+                    "is-invalid": state.errors.projectIdentifier,
                   })}
                   placeholder="Unique Project ID"
                   name="projectIdentifier"
-                  value={projectIdentifier}
-                  onChange={(e) => setProjectIdentifier(e.target.value)}
+                  value={state.projectIdentifier}
+                  onChange={onChange}
                 />
-                {errors.projectIdentifier && (
+                {state.errors.projectIdentifier && (
                   <div className="invalid-feedback">
-                    {errors.projectIdentifier}
+                    {state.errors.projectIdentifier}
                   </div>
                 )}
               </div>
               <div className="form-group">
                 <textarea
                   className={classNames("form-control form-control-lg ", {
-                    "is-invalid": errors.description,
+                    "is-invalid": state.errors.description,
                   })}
                   placeholder="Project Description"
                   name="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={state.description}
+                  onChange={onChange}
                 ></textarea>
-                {errors.description && (
-                  <div className="invalid-feedback">{errors.description}</div>
+                {state.errors.description && (
+                  <div className="invalid-feedback">
+                    {state.errors.description}
+                  </div>
                 )}
               </div>
               <h6>Start Date</h6>
@@ -94,9 +111,13 @@ const AddProject = (props) => {
                 <input
                   type="date"
                   className="form-control form-control-lg"
+                  // onFocus={(e) => (e.currentTarget.type = "text")}
+                  // onFocus={(e) => (e.currentTarget.type = "date")}
+                  onBlur={(e) => (e.currentTarget.type = "date")}
                   name="start_date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  placeholder="mm/dd/yyyy"
+                  defaultValue={state.startDate}
+                  onChange={onChange}
                 />
               </div>
               <h6>Estimated End Date</h6>
@@ -104,9 +125,13 @@ const AddProject = (props) => {
                 <input
                   type="date"
                   className="form-control form-control-lg"
+                  // onFocus={(e) => (e.currentTarget.type = "text")}
+                  // onFocus={(e) => (e.currentTarget.type = "date")}
+                  onBlur={(e) => (e.currentTarget.type = "date")}
                   name="end_date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  placeholder="mm/dd/yyyy"
+                  defaultValue={state.endDate}
+                  onChange={onChange}
                 />
               </div>
               <input type="submit" className="btn btn-primary btn-block mt-4" />

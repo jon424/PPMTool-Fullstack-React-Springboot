@@ -7,15 +7,12 @@ import { getProject, createProject } from "../../actions/projectActions";
 import classNames from "classnames";
 
 const UpdateProject = (props) => {
-  // console.log("props coming in: ", props.project);
   let navigate = useNavigate();
   let location = useLocation();
   const { id } = useParams();
 
-  //   console.log("location.state.project: ", location.state.project); //<~~~ this is the thing that you clicked on!
   const projectDetails = location.state.project;
 
-  //   const [errors, setErrors] = useState(props.errors);
   const [state, setState] = useState({
     id,
     projectName: "",
@@ -28,16 +25,12 @@ const UpdateProject = (props) => {
 
   let project = props.project;
   let errors = props.errors;
-  useEffect(
-    (state) => {
-      setState({
-        // ...state,
-        ...projectDetails,
-        errors: errors,
-      });
-    },
-    [project, errors]
-  );
+  useEffect(() => {
+    setState({
+      ...projectDetails,
+      errors: errors,
+    });
+  }, [project, errors]);
 
   useEffect(() => {
     if (props.errors) {
@@ -53,13 +46,10 @@ const UpdateProject = (props) => {
   const onChange = (e) => {
     let field = e.target.name;
     props.errors[field] = false;
-    // console.log("e in onChange: ", e.target.value);
     setState((projectDetails) => ({
-      //   ...state,
       ...projectDetails,
       [e.target.name]: e.target.value,
     }));
-    // console.log("onChange() state: ", state);
   };
 
   const onSubmit = (e) => {
@@ -72,12 +62,6 @@ const UpdateProject = (props) => {
 
     const updateProject = {
       ...state,
-      //   projectName: projectName,
-      //   projectIdentifier: projectIdentifier,
-      //   description: description,
-      //   startDate: startDate,
-      //   endDate: endDate,
-      //   errors: props.errors,
     };
     setState({ ...updateProject });
 
