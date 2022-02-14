@@ -11,18 +11,10 @@ const UpdateProject = (props) => {
   let navigate = useNavigate();
   let location = useLocation();
   const { id } = useParams();
-  //   console.log("navigate: ", navigate, " location: ", location, " id: ", id);
-  // console.log(" location: ", location);
 
   //   console.log("location.state.project: ", location.state.project); //<~~~ this is the thing that you clicked on!
   const projectDetails = location.state.project;
-  //   const [projectName, setProjectName] = useState(props.project.projectName);
-  //   const [projectIdentifier, setProjectIdentifier] = useState(
-  //     props.project.projectIdentifier
-  //   );
-  //   const [description, setDescription] = useState(props.project.description);
-  //   const [startDate, setStartDate] = useState(props.project.startDate);
-  //   const [endDate, setEndDate] = useState(props.project.endDate);
+
   //   const [errors, setErrors] = useState(props.errors);
   const [state, setState] = useState({
     id,
@@ -35,7 +27,6 @@ const UpdateProject = (props) => {
   });
 
   let project = props.project;
-  //   let project = location.state.project;
   let errors = props.errors;
   useEffect(
     (state) => {
@@ -44,7 +35,6 @@ const UpdateProject = (props) => {
         ...projectDetails,
         errors: errors,
       });
-      //   console.log("useEffect1 state: ", state);
     },
     [project, errors]
   );
@@ -53,28 +43,23 @@ const UpdateProject = (props) => {
     if (props.errors) {
       setState({ ...state, errors: props.errors });
     }
-    // console.log("useEffect2 state: ", state);
   }, [props.errors]);
 
   let onGetProject = props.onGetProject;
-  useEffect(
-    () => {
-      onGetProject(id, navigate);
-      //   console.log("onGetProject() state: ", state);
-      //   console.log("onGetProject() id, navigate: ", id, ", ", navigate);
-    },
-    //    [onGetProject, id, navigate]
-    []
-  );
+  useEffect(() => {
+    onGetProject(id, navigate);
+  }, []);
 
   const onChange = (e) => {
+    let field = e.target.name;
+    props.errors[field] = false;
     // console.log("e in onChange: ", e.target.value);
     setState((projectDetails) => ({
       //   ...state,
       ...projectDetails,
       [e.target.name]: e.target.value,
     }));
-    console.log("onChange() state: ", state);
+    // console.log("onChange() state: ", state);
   };
 
   const onSubmit = (e) => {
@@ -99,8 +84,6 @@ const UpdateProject = (props) => {
     console.log("onSubmit state: ", state);
     props.onCreateProject(updateProject, navigate);
   };
-
-  // console.log("projectDetails.start_date: ", projectDetails.start_date);
 
   return (
     <div className="register">
