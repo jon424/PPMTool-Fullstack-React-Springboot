@@ -7,12 +7,12 @@ import { getProject, createProject } from "../../actions/projectActions";
 import classNames from "classnames";
 
 const UpdateProject = (props) => {
-  console.log("props coming in: ", props.project);
+  // console.log("props coming in: ", props.project);
   let navigate = useNavigate();
   let location = useLocation();
   const { id } = useParams();
   //   console.log("navigate: ", navigate, " location: ", location, " id: ", id);
-  console.log(" location: ", location);
+  // console.log(" location: ", location);
 
   //   console.log("location.state.project: ", location.state.project); //<~~~ this is the thing that you clicked on!
   const projectDetails = location.state.project;
@@ -68,13 +68,13 @@ const UpdateProject = (props) => {
   );
 
   const onChange = (e) => {
-    console.log("e in onChange: ", e.target.value);
+    // console.log("e in onChange: ", e.target.value);
     setState((projectDetails) => ({
       //   ...state,
       ...projectDetails,
       [e.target.name]: e.target.value,
     }));
-    // console.log("onChange() state: ", state);
+    console.log("onChange() state: ", state);
   };
 
   const onSubmit = (e) => {
@@ -99,6 +99,8 @@ const UpdateProject = (props) => {
     console.log("onSubmit state: ", state);
     props.onCreateProject(updateProject, navigate);
   };
+
+  // console.log("projectDetails.start_date: ", projectDetails.start_date);
 
   return (
     <div className="register">
@@ -164,8 +166,12 @@ const UpdateProject = (props) => {
                 <input
                   type="date"
                   className="form-control form-control-lg"
+                  // onFocus={(e) => (e.currentTarget.type = "text")}
+                  // onFocus={(e) => (e.currentTarget.type = "date")}
+                  onBlur={(e) => (e.currentTarget.type = "date")}
                   name="start_date"
-                  defaultValue={projectDetails.startDate}
+                  placeholder="mm/dd/yyyy"
+                  defaultValue={projectDetails.start_date}
                   onChange={onChange}
                 />
               </div>
@@ -174,8 +180,12 @@ const UpdateProject = (props) => {
                 <input
                   type="date"
                   className="form-control form-control-lg"
+                  // onFocus={(e) => (e.currentTarget.type = "text")}
+                  // onFocus={(e) => (e.currentTarget.type = "date")}
+                  onBlur={(e) => (e.currentTarget.type = "date")}
                   name="end_date"
-                  defaultValue={projectDetails.endDate}
+                  placeholder="mm/dd/yyyy"
+                  defaultValue={projectDetails.end_date}
                   onChange={onChange}
                 />
               </div>
