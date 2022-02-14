@@ -7,11 +7,15 @@ import { getProject, createProject } from "../../actions/projectActions";
 import classNames from "classnames";
 
 const UpdateProject = (props) => {
-  //   console.log(props.project);
+  console.log("props coming in: ", props.project);
   let navigate = useNavigate();
   let location = useLocation();
   const { id } = useParams();
+  //   console.log("navigate: ", navigate, " location: ", location, " id: ", id);
+  console.log(" location: ", location);
 
+  //   console.log("location.state.project: ", location.state.project); //<~~~ this is the thing that you clicked on!
+  const projectDetails = location.state.project;
   //   const [projectName, setProjectName] = useState(props.project.projectName);
   //   const [projectIdentifier, setProjectIdentifier] = useState(
   //     props.project.projectIdentifier
@@ -31,20 +35,16 @@ const UpdateProject = (props) => {
   });
 
   let project = props.project;
+  //   let project = location.state.project;
   let errors = props.errors;
   useEffect(
     (state) => {
       setState({
-        ...state,
-        id: project.id,
-        projectName: project.projectName,
-        projectIdentifier: project.projectIdentifier,
-        description: project.description,
-        startDate: project.startDate,
-        endDate: project.endDate,
+        // ...state,
+        ...projectDetails,
         errors: errors,
       });
-      console.log("useEffect1 state: ", state);
+      //   console.log("useEffect1 state: ", state);
     },
     [project, errors]
   );
@@ -53,25 +53,28 @@ const UpdateProject = (props) => {
     if (props.errors) {
       setState({ ...state, errors: props.errors });
     }
-    console.log("useEffect2 state: ", state);
+    // console.log("useEffect2 state: ", state);
   }, [props.errors]);
 
   let onGetProject = props.onGetProject;
   useEffect(
     () => {
       onGetProject(id, navigate);
-      console.log("useEffect3 (onGetProject) state: ", state);
+      //   console.log("onGetProject() state: ", state);
+      //   console.log("onGetProject() id, navigate: ", id, ", ", navigate);
     },
     //    [onGetProject, id, navigate]
     []
   );
 
   const onChange = (e) => {
-    setState((state) => ({
-      ...state,
+    console.log("e in onChange: ", e.target.value);
+    setState((projectDetails) => ({
+      //   ...state,
+      ...projectDetails,
       [e.target.name]: e.target.value,
     }));
-    console.log("onChange() state: ", state);
+    // console.log("onChange() state: ", state);
   };
 
   const onSubmit = (e) => {
@@ -79,7 +82,7 @@ const UpdateProject = (props) => {
     if (props.errors) {
       //   e.preventDefault();
       //   props.onGetProject(id, navigate);
-      navigate(location);
+      //   navigate(location);
     }
 
     const updateProject = {
@@ -113,7 +116,7 @@ const UpdateProject = (props) => {
                   })}
                   placeholder="Project Name"
                   name="projectName"
-                  defaultValue={props.project.projectName}
+                  defaultValue={projectDetails.projectName}
                   onChange={onChange}
                 />
                 {props.errors.projectName && (
@@ -130,7 +133,7 @@ const UpdateProject = (props) => {
                   })}
                   placeholder="Unique Project ID"
                   name="projectIdentifier"
-                  defaultValue={props.project.projectIdentifier}
+                  defaultValue={projectDetails.projectIdentifier}
                   onChange={onChange}
                   //   disabled
                 />
@@ -147,7 +150,7 @@ const UpdateProject = (props) => {
                   })}
                   placeholder="Project Description"
                   name="description"
-                  defaultValue={props.project.description}
+                  defaultValue={projectDetails.description}
                   onChange={onChange}
                 ></textarea>
                 {props.errors.description && (
@@ -162,7 +165,7 @@ const UpdateProject = (props) => {
                   type="date"
                   className="form-control form-control-lg"
                   name="start_date"
-                  defaultValue={props.project.startDate}
+                  defaultValue={projectDetails.startDate}
                   onChange={onChange}
                 />
               </div>
@@ -172,7 +175,7 @@ const UpdateProject = (props) => {
                   type="date"
                   className="form-control form-control-lg"
                   name="end_date"
-                  defaultValue={props.project.endDate}
+                  defaultValue={projectDetails.endDate}
                   onChange={onChange}
                 />
               </div>

@@ -4,6 +4,14 @@ import { Link } from "react-router-dom";
 const ProjectItem = (props) => {
   const { project } = props;
 
+  // const linkTarget = {
+  //   pathname: `/updateProject/${project.projectIdentifier}`,
+  //   key: Math.random(), // we could use Math.random, but that's not guaranteed unique.
+  //   state: {
+  //     applied: true,
+  //   },
+  // };
+
   return (
     <div className="container">
       <div className="card card-body bg-light mb-3">
@@ -22,7 +30,11 @@ const ProjectItem = (props) => {
                   <i className="fa fa-flag-checkered pr-1">Project Board </i>
                 </li>
               </Link>
-              <Link to={`/updateProject/${project.projectIdentifier}`}>
+              <Link
+                to={`/updateProject/${project.projectIdentifier}`}
+                state={{ ...props }}
+                // onClick={() => window.location.pathname}
+              >
                 <li className="list-group-item update">
                   <i className="fa fa-edit pr-1">Update Project Info</i>
                 </li>
