@@ -1,7 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { deleteProject } from "../../actions/projectActions";
 
 const ProjectItem = (props) => {
+  // const onClick = (id) => {
+  //   props.onDeleteProject(id);
+  //   deleteProject();
+  // };
+
+  // let onDeleteProject = props.onDeleteProject;
+  // // console.log("onDeleteProject: ", onDeleteProject);
+  // let projectId = props.project.id;
+  // console.log("projectId: ", projectId);
+  // onDeleteProject = (id) => {
+  //   console.log("id: ", id);
+  //   console.log("props onDelete: ", props.project);
+  //   deleteProject(id);
+  // };
   const { project } = props;
 
   // const linkTarget = {
@@ -39,11 +56,15 @@ const ProjectItem = (props) => {
                   <i className="fa fa-edit pr-1">Update Project Info</i>
                 </li>
               </Link>
-              <Link to="">
-                <li className="list-group-item delete">
-                  <i className="fa fa-minus-circle pr-1">Delete Project</i>
-                </li>
-              </Link>
+              {/* <Link
+              // to={`/deleteProject/${project.projectIdentifier}`}
+              // state={{ ...props }}
+              // onClick={props.onDeleteProject}
+              > */}
+              <li className="list-group-item delete">
+                <i className="fa fa-minus-circle pr-1">Delete Project</i>
+              </li>
+              {/* </Link> */}
             </ul>
           </div>
         </div>
@@ -52,4 +73,24 @@ const ProjectItem = (props) => {
   );
 };
 
+ProjectItem.propTypes = {
+  onDeleteProject: PropTypes.func.isRequired,
+  // deleteProject: PropTypes.func.isRequired,
+  // project: PropTypes.object.isRequired,
+};
+
+// const mapStateToProps = (state) => ({
+//   project: state.project.project,
+//   errors: state.errors,
+// });
+
+// export default connect(null, (dispatch) => ({
+//   onDeleteProject: (props, history) => dispatch(deleteProject(props, history)),
+// }))(ProjectItem);
+
+// export default connect(null, (dispatch) => ({
+//   onDeleteProject: () => dispatch(deleteProject),
+// }))(ProjectItem);
+
+// export default connect(null, { deleteProject }(ProjectItem));
 export default ProjectItem;

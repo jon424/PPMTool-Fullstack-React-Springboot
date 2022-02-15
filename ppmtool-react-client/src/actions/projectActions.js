@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { GET_ERRORS, GET_PROJECT, GET_PROJECTS } from "./types";
+import { GET_ERRORS, GET_PROJECT, GET_PROJECTS, DELETE_PROJECT } from "./types";
 
 //we wire up some methods ... useNavigate (react router v6) allows you to redirect once we submit form
 export const createProject = (project, navigate) => async (dispatch) => {
   try {
-    await axios.post("http://localhost:8080/api/project", project);
+    await axios.post("/api/project", project);
     navigate("/dashboard");
   } catch (err) {
     dispatch({
@@ -17,7 +17,7 @@ export const createProject = (project, navigate) => async (dispatch) => {
 };
 
 export const getProjects = () => async (dispatch) => {
-  const res = await axios.get("http://localhost:8080/api/project/all");
+  const res = await axios.get("/api/project/all");
   dispatch({
     type: GET_PROJECTS,
     payload: res.data,
@@ -26,10 +26,24 @@ export const getProjects = () => async (dispatch) => {
 
 //gets history, because if there are any errors, we redirect to /dashboard
 export const getProject = (id, navigate) => async (dispatch) => {
+  console.log("id in getProject: ", id);
   try {
-    const res = await axios.get(`http://localhost:8080/api/project/${id}`);
+    const res = await axios.get(`/api/project/${id}`);
     dispatch({ type: GET_PROJECT, payload: res.data });
   } catch (err) {
     navigate("/dashboard");
   }
+};
+
+//gets history, because if there are any errors, we redirect to /dashboard
+export const deleteProject = (id) => async (dispatch) => {
+  console.log("id from deleteProject: ", dispatch);
+  // if (
+  //   window.confirm(
+  //     "Are you sure? This will delete the project and all teh data related to it."
+  //   )
+  // ) {
+  //   await axios.delete(`/api/project/${id}`);
+  //   dispatch({ type: DELETE_PROJECT, payload: id });
+  // }
 };
