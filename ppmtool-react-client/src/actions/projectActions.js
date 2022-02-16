@@ -36,14 +36,14 @@ export const getProject = (id, navigate) => async (dispatch) => {
 };
 
 //gets history, because if there are any errors, we redirect to /dashboard
-export const deleteProject = (id) => async (dispatch) => {
+export const deleteProject = (id, navigate) => async (dispatch) => {
   console.log("id from deleteProject: ", dispatch);
-  // if (
-  //   window.confirm(
-  //     "Are you sure? This will delete the project and all teh data related to it."
-  //   )
-  // ) {
-  //   await axios.delete(`/api/project/${id}`);
-  //   dispatch({ type: DELETE_PROJECT, payload: id });
-  // }
+  if (
+    window.confirm(
+      "Are you sure? This will delete the project and all teh data related to it."
+    )
+  ) {
+    await axios.delete(`/api/project/${id}`);
+    dispatch({ type: DELETE_PROJECT, payload: id });
+  }
 };

@@ -2,13 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router";
 import { deleteProject } from "../../actions/projectActions";
 
 const ProjectItem = (props) => {
-  // const onClick = (id) => {
-  //   props.onDeleteProject(id);
-  //   deleteProject();
-  // };
+  let navigate = useNavigate();
+  //props.project.id is the id you want to delete!
+  const onClick = () => {
+    // console.log("onClick id: ", id);
+    console.log("props.project.id: ", props.project.id);
+    props.onDeleteProject(props.project.projectIdentifier, navigate);
+    // deleteProject();
+  };
 
   // let onDeleteProject = props.onDeleteProject;
   // // console.log("onDeleteProject: ", onDeleteProject);
@@ -61,7 +66,7 @@ const ProjectItem = (props) => {
               // state={{ ...props }}
               // onClick={props.onDeleteProject}
               > */}
-              <li className="list-group-item delete">
+              <li className="list-group-item delete" onClick={onClick}>
                 <i className="fa fa-minus-circle pr-1">Delete Project</i>
               </li>
               {/* </Link> */}
@@ -88,9 +93,9 @@ ProjectItem.propTypes = {
 //   onDeleteProject: (props, history) => dispatch(deleteProject(props, history)),
 // }))(ProjectItem);
 
-// export default connect(null, (dispatch) => ({
-//   onDeleteProject: () => dispatch(deleteProject),
-// }))(ProjectItem);
+export default connect(null, (dispatch) => ({
+  onDeleteProject: (props) => dispatch(deleteProject(props)),
+}))(ProjectItem);
 
 // export default connect(null, { deleteProject }(ProjectItem));
-export default ProjectItem;
+// export default ProjectItem;
