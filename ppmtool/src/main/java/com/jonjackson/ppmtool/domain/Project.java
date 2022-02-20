@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity //calls this object an entity that we will add to
 public class Project {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Project name is required")
     private String projectName;
@@ -29,6 +29,11 @@ public class Project {
     private Date created_at;
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_at;
+
+    //cascade type all makes the project the owning side of the relationship
+    //"project" is the same object name we have to give to the Backlog obj
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
+    private Backlog backlog;
 
     //constructor
     public Project() {
@@ -96,6 +101,14 @@ public class Project {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
     }
 
     @PrePersist

@@ -1,9 +1,8 @@
 package com.jonjackson.ppmtool.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 
 @Entity
 public class Backlog {
@@ -16,7 +15,12 @@ public class Backlog {
     private String projectIdentifier;
 
     //OneToOne with project (each project has one backlog. one backlog belongs to one project)
-
+    //important to name the 'project' here as named in the mappedBy in Project {}
+    //JsonIgnore prevents an endless loop when creating new projects that have backlog
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="project_id", nullable = false)
+    @JsonIgnore
+    private Project project;
     //OneToMany with projecttasks (a backlog can have one or more projecttasks, but a projecttask can belong to one project)
 
     public Backlog(){
@@ -44,5 +48,13 @@ public class Backlog {
 
     public void setProjectIdentifier(String projectIdentifier) {
         this.projectIdentifier = projectIdentifier;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
