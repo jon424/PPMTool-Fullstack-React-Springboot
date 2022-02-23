@@ -34,7 +34,7 @@ public class Project {
     //cascade type all makes the project the owning side of the relationship
     //"project" is the same object name we have to give to the Backlog obj
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
-//    @JsonIgnore
+    @JsonIgnore
     private Backlog backlog;
 
     //constructor
