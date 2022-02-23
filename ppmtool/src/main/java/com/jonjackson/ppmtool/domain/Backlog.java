@@ -26,7 +26,7 @@ public class Backlog {
 
     //OneToMany with projecttasks (a backlog can have one or more projecttasks, but a projecttask can belong to one project)
     //I removed mappedBy = "backlog", from the following @OneToOne
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "backlog", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "backlog")
     private List<ProjectTask> projectTasks = new ArrayList<>();
 
     public Backlog(){

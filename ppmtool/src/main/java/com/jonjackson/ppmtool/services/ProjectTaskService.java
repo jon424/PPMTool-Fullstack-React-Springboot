@@ -21,17 +21,17 @@ public class ProjectTaskService {
     @Autowired
     private ProjectTaskRepository projectTaskRepository;
 
-    @Autowired
-    private ProjectRepository projectRepository;
+//    @Autowired
+//    private ProjectRepository projectRepository;
 
-    @Autowired
-    private ProjectService projectService;
+//    @Autowired
+//    private ProjectService projectService;
 
     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask){
         //Exceptions: Project not found
 
         //all PTs to be added to a specific project (if the Project !=null, BL exists)
-        Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier).getBacklog();
+        Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
         //set backlog to the projectTask
         projectTask.setBacklog(backlog);
 
@@ -44,7 +44,7 @@ public class ProjectTaskService {
         backlog.setPTSequence(BacklogSequence);
 
         //add sequence to Project Task
-        projectTask.setProjectSequence(projectIdentifier+"-"+BacklogSequence);
+        projectTask.setProjectSequence(backlog.getProjectIdentifier()+"-"+BacklogSequence);
         projectTask.setProjectIdentifier(projectIdentifier);
 
         //INITIAL priority when priority is null (low3, med.2, hi1)

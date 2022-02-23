@@ -26,7 +26,7 @@ public class ProjectTask {
     private Date dueDate;
     // ManyToOne with Backlog - a task can only belong to one backlog, but many tasks can be in one backlog
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name="backlog_id", updatable = false, nullable = false)
     @JsonIgnore
     private Backlog backlog;
