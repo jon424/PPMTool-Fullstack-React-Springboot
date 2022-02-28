@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity //calls this object an entity that we will add to
+@Table(name = "project")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
