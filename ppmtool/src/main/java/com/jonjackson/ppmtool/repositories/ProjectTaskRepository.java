@@ -11,4 +11,6 @@ public interface ProjectTaskRepository extends CrudRepository<ProjectTask, Long>
 
     //custom query with JPA
     List<ProjectTask> findByProjectIdentifierOrderByPriority(String id);
+
+    ProjectTask findByProjectSequence(String sequence);
 }
